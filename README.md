@@ -5,4 +5,4 @@ This is my own CV-web page based on:
 - Iris Web framework for Golang
 - Golang
 
-Resource link: https://not-ready-yet.net
+Resource link: https://devops-page.azurewebsites.net (Not ready yet)
