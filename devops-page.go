@@ -7,7 +7,7 @@ import (
 )
 
 func newApp() *bootstrap.Bootstrapper {
-	app := bootstrap.New("Russian DevOps page", "po4tatyt@gmail.com")
+	app := bootstrap.New("Devops-page", "Denis Lavrushko")
 	app.Bootstrap()
 	app.Configure(identity.Configure, routes.Configure)
 	return app
