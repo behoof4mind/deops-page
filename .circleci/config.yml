@@ -24,7 +24,6 @@ jobs:
     environment:
       DOCKER_USER: behoof4mind
       IMAGE_NAME: behoof4mind/devops-page
-      IMAGE_TAG: "0.0.${CIRCLE_BUILD_NUM}"
     docker:
       - image: circleci/golang:1.15
     steps:
@@ -33,13 +32,13 @@ jobs:
       - run:
           name: Build docker image
           command: |
+            IMAGE_TAG="0.0.${CIRCLE_BUILD_NUM}"
             docker build -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:latest .
 
   push:
     environment:
       DOCKER_USER: behoof4mind
       IMAGE_NAME: behoof4mind/devops-page
-      IMAGE_TAG: "0.0.${CIRCLE_BUILD_NUM}"
     docker:
       - image: circleci/golang:1.15
     steps:
@@ -48,6 +47,7 @@ jobs:
       - run:
           name: Publish Docker Image to DockerHub
           command: |
+            IMAGE_TAG="0.0.${CIRCLE_BUILD_NUM}"
             docker tag $IMAGE_NAME $IMAGE_NAME:$IMAGE_TAG
             docker tag $IMAGE_NAME $IMAGE_NAME:latest
             docker push $IMAGE_NAME:$IMAGE_TAG
