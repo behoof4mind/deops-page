@@ -24,7 +24,11 @@ jobs:
       - checkout
 
       # specify any bash command here prefixed with `run: `
-      - run: docker build -t behoof4mind/devops-page:0.0.1
+      - run:
+          name: Build docker image
+          command: |
+            IMAGE_TAG="0.0.${CIRCLE_BUILD_NUM}"
+            docker build -t $IMAGE_NAME:$IMAGE_TAG
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
