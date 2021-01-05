@@ -15,5 +15,5 @@ func newApp() *bootstrap.Bootstrapper {
 
 func main() {
 	app := newApp()
-	app.Listen(":80")
+	app.Listen(":443")
 }
