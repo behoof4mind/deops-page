@@ -47,6 +47,7 @@ jobs:
       - run:
           name: Publish Docker Image to DockerHub
           command: |
+            docker images
             IMAGE_TAG="0.0.${CIRCLE_BUILD_NUM}"
             docker tag $IMAGE_NAME $IMAGE_NAME:$IMAGE_TAG
             docker tag $IMAGE_NAME $IMAGE_NAME:latest
