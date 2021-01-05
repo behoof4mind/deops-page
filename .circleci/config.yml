@@ -4,6 +4,8 @@
 version: 2
 jobs:
   build:
+    context:
+      - DOCKERHUB
     environment:
       IMAGE_NAME: behoof4mind/devops-page
     docker:
