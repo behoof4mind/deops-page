@@ -11,6 +11,9 @@ jobs:
     docker:
       # specify the version
       - image: circleci/golang:1.12
+        auth:
+          username: $DOCKERHUB_USR
+          password: $DOCKERHUB_PWD
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -34,7 +37,7 @@ jobs:
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
-            echo "$DOCKERHUB_PWD" | docker login -u "$DOCKERHUB_USR" --password-stdin
+            echo $DOCKERHUB_PWD | docker login --username $DOCKERHUB_USR --password-stdin
             IMAGE_TAG="0.0.${CIRCLE_BUILD_NUM}"
             docker tag $IMAGE_NAME:latest $IMAGE_NAME:$IMAGE_TAG
             docker push $IMAGE_NAME:latest
