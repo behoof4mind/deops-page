@@ -1,8 +1,9 @@
 version: 2.1
+
 defaults:
   docker_login: &docker_login
     run:
-      name: Login to Dockerhub
+      name: Login to DockerHub
       command: |
         if [ "${DOCKER_USER}" == "" ] || [ "${DOCKER_PASS}" == "" ]; then
             echo "Skipping Login to Dockerhub, no credentials."
@@ -10,35 +11,52 @@ defaults:
             echo "${DOCKER_PASS}" | docker login -u="${DOCKER_USER}" --password-stdin
         fi
 
-workflows:
-  my-workflow:
-    jobs:
-      - build:
-          context:
-            - DOCKERHUB
 jobs:
-  build:
-    environment:
-      DOCKER_USER: behoof4mind
-      IMAGE_NAME: behoof4mind/devops-page
+  environment:
+    DOCKER_USER: behoof4mind
+    IMAGE_NAME: behoof4mind/devops-page
+    IMAGE_TAG: "0.0.${CIRCLE_BUILD_NUM}"
+
+  test:
     docker:
       - image: circleci/golang:1.15
-    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
+    steps:
+      - run:
+          name: Here must be tests
+          command: echo "test passed :)"
+
+  build:
+    docker:
+      - image: circleci/golang:1.15
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: Build docker image
           command: |
-            IMAGE_TAG="0.0.${CIRCLE_BUILD_NUM}"
             docker build -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:latest .
+
+  push:
+    docker:
+      - image: circleci/golang:1.15
+    steps:
+      - setup_remote_docker
       - *docker_login
       - run:
-          name: Publish Docker Image to Docker Hub
+          name: Publish Docker Image to DockerHub
           command: |
-            IMAGE_TAG="0.0.${CIRCLE_BUILD_NUM}"
             docker tag $IMAGE_NAME $IMAGE_NAME:$IMAGE_TAG
             docker tag $IMAGE_NAME $IMAGE_NAME:latest
             docker push $IMAGE_NAME:$IMAGE_TAG
             docker push $IMAGE_NAME:latest
 
+
+workflows:
+  main:
+    jobs:
+      - build:
+          context:
+            - DOCKERHUB
+      - push:
+          context:
+            - DOCKERHUB
