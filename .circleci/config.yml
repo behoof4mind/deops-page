@@ -12,10 +12,14 @@ defaults:
         else
             echo "${DOCKER_PASS}" | docker login -u="${DOCKER_USER}" --password-stdin
         fi
+workflows:
+  my-workflow:
+    jobs:
+      - build:
+          context:
+            - DOCKERHUB
 jobs:
   build:
-    context:
-      - DOCKERHUB
     environment:
       IMAGE_NAME: behoof4mind/devops-page
     docker:
@@ -60,3 +64,4 @@ jobs:
             docker tag $IMAGE_NAME $IMAGE_NAME:latest
             docker push $IMAGE_NAME:$IMAGE_TAG
             docker push $IMAGE_NAME:latest
+
