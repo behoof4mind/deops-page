@@ -26,9 +26,6 @@ jobs:
     docker:
       # specify the version
       - image: circleci/golang:1.15
-        auth:
-          username: ${DOCKER_USER}
-          password: ${DOCKER_PASS}
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
