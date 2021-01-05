@@ -57,9 +57,14 @@ jobs:
 workflows:
   main:
     jobs:
+      - test
       - build:
+          requires:
+            - test
           context:
             - DOCKERHUB
       - push:
+          requires:
+            - build
           context:
             - DOCKERHUB
