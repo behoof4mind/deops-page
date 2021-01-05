@@ -2,6 +2,16 @@
 #
 # Check https://circleci.com/docs/2.0/language-go/ for more details
 version: 2
+defaults:
+  docker_login: &docker_login
+    run:
+      name: Login to Dockerhub
+      command: |
+        if [ "${$DOCKERHUB_USR}" == "" ] || [ "${$DOCKERHUB_PWD}" == "" ]; then
+            echo "Skipping Login to Dockerhub, no credentials."
+        else
+            echo "${$DOCKERHUB_PWD}" | docker login -u="${$DOCKERHUB_USR}" --password-stdin
+        fi
 jobs:
   build:
     context:
@@ -26,6 +36,11 @@ jobs:
     ####   /go/src/bitbucket.org/circleci/go-tool
     working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
     steps:
+      - run:
+          name: check vars
+          command: |
+            echo $DOCKERHUB_USR
+            echo $DOCKERHUB_PWD
       - checkout
       - setup_remote_docker
       # specify any bash command here prefixed with `run: `
@@ -34,11 +49,12 @@ jobs:
           command: |
             IMAGE_TAG="0.0.${CIRCLE_BUILD_NUM}"
             docker build -t $IMAGE_NAME:$IMAGE_TAG .
+      - *docker_login
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
             IMAGE_TAG="0.0.${CIRCLE_BUILD_NUM}"
-            echo "$DOCKERHUB_PWD" | docker login --username $DOCKERHUB_USR --password-stdin
+            echo "$DOCKERHUB_PWD" | docker login -u "$DOCKERHUB_USR" --password-stdin
             docker tag $IMAGE_NAME $IMAGE_NAME:$IMAGE_TAG
             docker tag $IMAGE_NAME $IMAGE_NAME:latest
             docker push $IMAGE_NAME:$IMAGE_TAG
