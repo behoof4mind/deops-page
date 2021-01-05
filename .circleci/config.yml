@@ -12,11 +12,6 @@ defaults:
         fi
 
 jobs:
-  environment:
-    DOCKER_USER: behoof4mind
-    IMAGE_NAME: behoof4mind/devops-page
-    IMAGE_TAG: "0.0.${CIRCLE_BUILD_NUM}"
-
   test:
     docker:
       - image: circleci/golang:1.15
@@ -26,6 +21,10 @@ jobs:
           command: echo "test passed :)"
 
   build:
+    environment:
+      DOCKER_USER: behoof4mind
+      IMAGE_NAME: behoof4mind/devops-page
+      IMAGE_TAG: "0.0.${CIRCLE_BUILD_NUM}"
     docker:
       - image: circleci/golang:1.15
     steps:
@@ -37,6 +36,10 @@ jobs:
             docker build -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:latest .
 
   push:
+    environment:
+      DOCKER_USER: behoof4mind
+      IMAGE_NAME: behoof4mind/devops-page
+      IMAGE_TAG: "0.0.${CIRCLE_BUILD_NUM}"
     docker:
       - image: circleci/golang:1.15
     steps:
