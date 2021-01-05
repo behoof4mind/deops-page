@@ -1,0 +1,5 @@
+.circleci
+README.md
+LICENSE
+.gitignore
+.dockerignore
