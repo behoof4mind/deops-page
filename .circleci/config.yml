@@ -7,10 +7,10 @@ defaults:
     run:
       name: Login to Dockerhub
       command: |
-        if [ "${$DOCKERHUB_USR}" == "" ] || [ "${$DOCKERHUB_PWD}" == "" ]; then
+        if [ "${DOCKER_USER}" == "" ] || [ "${DOCKER_PASS}" == "" ]; then
             echo "Skipping Login to Dockerhub, no credentials."
         else
-            echo "${$DOCKERHUB_PWD}" | docker login -u="${$DOCKERHUB_USR}" --password-stdin
+            echo "${DOCKER_PASS}" | docker login -u="${DOCKER_USER}" --password-stdin
         fi
 jobs:
   build:
@@ -22,8 +22,8 @@ jobs:
       # specify the version
       - image: circleci/golang:1.15
         auth:
-          username: $DOCKERHUB_USR
-          password: $DOCKERHUB_PWD
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -39,8 +39,8 @@ jobs:
       - run:
           name: check vars
           command: |
-            echo $DOCKERHUB_USR
-            echo $DOCKERHUB_PWD
+            echo $DOCKER_USER
+            echo $DOCKER_PASS
       - checkout
       - setup_remote_docker
       # specify any bash command here prefixed with `run: `
@@ -54,7 +54,7 @@ jobs:
           name: Publish Docker Image to Docker Hub
           command: |
             IMAGE_TAG="0.0.${CIRCLE_BUILD_NUM}"
-            echo "$DOCKERHUB_PWD" | docker login -u "$DOCKERHUB_USR" --password-stdin
+            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
             docker tag $IMAGE_NAME $IMAGE_NAME:$IMAGE_TAG
             docker tag $IMAGE_NAME $IMAGE_NAME:latest
             docker push $IMAGE_NAME:$IMAGE_TAG
