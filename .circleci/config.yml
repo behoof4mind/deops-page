@@ -34,13 +34,13 @@ jobs:
           command: |
             IMAGE_TAG="0.0.${CIRCLE_BUILD_NUM}"
             docker build -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:latest .
-            mkdir -p ./images
-            docker save -o .images/$IMAGE_NAME.tar $IMAGE_NAME:$IMAGE_TAG
-            docker save -o .images/$IMAGE_NAME-latest.tar $IMAGE_NAME:latest
+            mkdir -p /tmp/images
+            docker save -o /tmp/images/$IMAGE_NAME.tar $IMAGE_NAME:$IMAGE_TAG
+            docker save -o /tmp/images/$IMAGE_NAME-latest.tar $IMAGE_NAME:latest
       - persist_to_workspace:
           root: images
           paths:
-            - images
+            - /tmp/images
 
   push:
     environment:
