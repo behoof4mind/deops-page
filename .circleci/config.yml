@@ -38,9 +38,9 @@ jobs:
             docker save -o /tmp/images/$IMAGE_NAME.tar $IMAGE_NAME:$IMAGE_TAG
             docker save -o /tmp/images/$IMAGE_NAME-latest.tar $IMAGE_NAME:latest
       - persist_to_workspace:
-          root: images
+          root: /tmp
           paths:
-            - /tmp/images
+            - images
 
   push:
     environment:
