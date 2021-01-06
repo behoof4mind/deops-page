@@ -50,7 +50,7 @@ jobs:
       - image: circleci/golang:1.15
     steps:
       - attach_workspace:
-          at: /tmp/workspace
+          at: /tmp/images
       - setup_remote_docker
       - *docker_login
       - run:
