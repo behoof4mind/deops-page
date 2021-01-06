@@ -50,12 +50,13 @@ jobs:
       - image: circleci/golang:1.15
     steps:
       - attach_workspace:
-          at: /tmp/images
+          at: /tmp/images/
       - setup_remote_docker
       - *docker_login
       - run:
           name: Publish Docker Image to DockerHub
           command: |
+            ls -lah /tmp/images
             docker load -i /tmp/images/app.tar
             docker load -i /tmp/images/app-latest.tar
             docker images
