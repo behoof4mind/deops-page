@@ -4,6 +4,7 @@ import (
 	"devops-page/bootstrap"
 	"devops-page/middleware/identity"
 	"devops-page/routes"
+	"github.com/caddyserver/certmagic"
 )
 
 func newApp() *bootstrap.Bootstrapper {
@@ -16,4 +17,7 @@ func newApp() *bootstrap.Bootstrapper {
 func main() {
 	app := newApp()
 	app.Listen(":80")
+	certmagic.DefaultACME.Agreed = true
+	certmagic.DefaultACME.Email = "dlavrushko@protonmail.com"
+	certmagic.HTTPS([]string{"dlavrushko.de"}, app)
 }
