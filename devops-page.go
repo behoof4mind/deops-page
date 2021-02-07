@@ -5,9 +5,8 @@ import (
 	"devops-page/bootstrap"
 	"devops-page/middleware/identity"
 	"devops-page/routes"
-	"golang.org/x/crypto/acme/autocert"
+	"fmt"
 	"net/http"
-	"strings"
 )
 
 func newApp() *bootstrap.Bootstrapper {
@@ -21,21 +20,21 @@ func main() {
 	//app := newApp()
 	//app.Listen(":443")
 	// LetsEncrypt setup
-	certManager := autocert.Manager{
-		Prompt:     autocert.AcceptTOS,
-		HostPolicy: autocert.HostWhitelist("dlavrushko.de"), // your domain here
-		Cache:      autocert.DirCache("certs"),              // folder for storing certificates
-	}
-	server := &http.Server{
-		Addr:      ":80˚",
-		TLSConfig: &tls.Config{GetCertificate: certManager.GetCertificate},
-	}
-	// open https server
-	_ = server.ListenAndServeTLS("", "")
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, "Hello HTTP/2")
+	})
 
-	// redirect everything to https
-	go http.ListenAndServe(":80", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		reqhost := strings.Split(r.Host, ":")[0]
-		http.Redirect(w, r, "https://"+reqhost+r.URL.Path, http.StatusMovedPermanently)
-	}))
+	server := http.Server{
+		Addr:    ":443",
+		Handler: mux,
+		TLSConfig: &tls.Config{
+			NextProtos: []string{"h2", "http/1.1"},
+		},
+	}
+
+	fmt.Printf("Server listening on %s", server.Addr)
+	if err := server.ListenAndServeTLS("certs/fullchain.pem", "certs/privkey.pem"); err != nil {
+		fmt.Println(err)
+	}
 }
