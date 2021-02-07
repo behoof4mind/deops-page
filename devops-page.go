@@ -27,7 +27,7 @@ func main() {
 		Cache:      autocert.DirCache("certs"),              // folder for storing certificates
 	}
 	server := &http.Server{
-		Addr:      ":8081",
+		Addr:      ":80˚",
 		TLSConfig: &tls.Config{GetCertificate: certManager.GetCertificate},
 	}
 	// open https server
