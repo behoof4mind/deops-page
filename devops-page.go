@@ -15,24 +15,5 @@ func newApp() *bootstrap.Bootstrapper {
 
 func main() {
 	app := newApp()
-
 	app.Listen(":443")
-	// LetsEncrypt setup
-	//mux := http.NewServeMux()
-	//mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-	//	fmt.Fprint(w, "Hello HTTP/2")
-	//})
-	//
-	//server := http.Server{
-	//	Addr:    ":443",
-	//	Handler: mux,
-	//	TLSConfig: &tls.Config{
-	//		NextProtos: []string{"h2", "http/1.1"},
-	//	},
-	//}
-	//
-	//fmt.Printf("Server listening on %s", server.Addr)
-	//if err := server.ListenAndServeTLS("certs/fullchain.pem", "certs/privkey.pem"); err != nil {
-	//	fmt.Println(err)
-	//}
 }
