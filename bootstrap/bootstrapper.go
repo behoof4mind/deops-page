@@ -119,5 +119,5 @@ func (b *Bootstrapper) Bootstrap() *Bootstrapper {
 
 // Listen starts the http server with the specified "addr".
 func (b *Bootstrapper) Listen(addr string, cfgs ...iris.Configurator) {
-	b.Run(iris.AutoTLS(addr, "dlavrushko.de www.dlavrushko.de", "dlavrushko@protonmail.com"))
+	b.Run(iris.TLS(addr, "/certs/cert.pem", "/certs/privkey.pem"))
 }
