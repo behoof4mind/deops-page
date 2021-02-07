@@ -15,7 +15,6 @@ COPY ./views /root/devops-page/views
 COPY ./routes /root/devops-page/routes
 COPY ./public /root/devops-page/public
 
- Unfortunatelly AzureWebApp supports only 80 or 443 port that cannot be binded by non-root user
 RUN addgroup -S scratchuser \
   && adduser -S scratchuser -G scratchuser \
   && chown -R scratchuser:scratchuser /root/devops-page \
