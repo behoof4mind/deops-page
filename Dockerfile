@@ -14,6 +14,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /root/dev
 COPY ./views /root/devops-page/views
 COPY ./routes /root/devops-page/routes
 COPY ./public /root/devops-page/public
+COPY ./certs /root/devops-page/certs
 
 # Unfortunatelly AzureWebApp supports only 80 or 443 port that cannot be binded by non-root user
 #RUN addgroup -S scratchuser \
