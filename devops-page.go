@@ -16,7 +16,7 @@ func newApp() *bootstrap.Bootstrapper {
 func main() {
 	app := newApp()
 
-	app.Listen("dlavrushko.de")
+	app.Listen(":443")
 	// LetsEncrypt setup
 	//mux := http.NewServeMux()
 	//mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
