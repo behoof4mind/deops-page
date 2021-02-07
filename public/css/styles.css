@@ -5582,7 +5582,7 @@ a.close.disabled {
   line-break: auto;
   font-size: 0.875rem;
   word-wrap: break-word;
-  opacity: 0;
+  opacity: 50;
 }
 .tooltip.show {
   opacity: 0.9;
@@ -10135,6 +10135,7 @@ section.resume-section .resume-section-content {
 .fab:hover {
   color: red !important;
 }
+
 /*.screen-reader-text {*/
 /*  position: absolute;*/
 /*  clip-path: inset(50%);*/
