@@ -15,20 +15,12 @@ COPY ./views /root/devops-page/views
 COPY ./routes /root/devops-page/routes
 COPY ./public /root/devops-page/public
 
-RUN addgroup -S scratchuser \
-  && adduser -S scratchuser -G scratchuser \
-  && chown -R scratchuser:scratchuser /root/devops-page \
-  && chown -R scratchuser:scratchuser /root/devops-page
-
 ############################
 # STEP 2 build a small image
 ############################
 FROM scratch
 LABEL maintainer="dlavrushko@protonmail.com"
 WORKDIR /app/
-#COPY --from=builder /go/src/devops-page .
 COPY --from=builder /root/devops-page/ .
-COPY --from=builder /etc/passwd /etc/passwd
-# Unfortunatelly AzureWebApp supports only 80 or 443 port that cannot be binded by non-root user
-USER scratchuser
+
 ENTRYPOINT ["/app/devops-page"]
