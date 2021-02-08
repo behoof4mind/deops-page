@@ -123,8 +123,8 @@ func (b *Bootstrapper) Bootstrap() *Bootstrapper {
 // Listen starts the http server with the specified "addr".
 func (b *Bootstrapper) Listen(addr string, cfgs ...iris.Configurator) {
 	//b.Run(iris.Addr(addr), cfgs...)
-	target, _ := url.Parse("https://127.0.0.1:443")
-	go host.NewRedirection("127.0.0.1:80", target, iris.StatusMovedPermanently).ListenAndServe()
+	target, _ := url.Parse("https://dlavrushko.de")
+	go host.NewRedirection("dlavrushko.de:80", target, iris.StatusMovedPermanently).ListenAndServe()
 	b.Run(iris.TLS(addr, "/certs/cert.pem", "/certs/privkey.pem", iris.TLSNoRedirect))
 }
 
