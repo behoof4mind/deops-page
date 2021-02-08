@@ -2,7 +2,6 @@ package bootstrap
 
 import (
 	"github.com/kataras/iris/v12/core/host"
-	"net/http"
 	"net/url"
 	"time"
 
@@ -123,12 +122,8 @@ func (b *Bootstrapper) Bootstrap() *Bootstrapper {
 // Listen starts the http server with the specified "addr".
 func (b *Bootstrapper) Listen(addr string, cfgs ...iris.Configurator) {
 	//b.Run(iris.Addr(addr), cfgs...)
-	target, _ := url.Parse("https://dlavrushko.de")
-	go host.NewRedirection("dlavrushko.de:80", target, iris.StatusMovedPermanently).ListenAndServe()
-	b.Run(iris.TLS(addr, "/certs/cert.pem", "/certs/privkey.pem", iris.TLSNoRedirect))
-}
+	target, _ := url.Parse("https://dlavrushko.de/")
+	go host.NewRedirection("0.0.0.0:80", target, iris.StatusMovedPermanently).ListenAndServe()
 
-func redirectToHttps(w http.ResponseWriter, r *http.Request) {
-	// Redirect the incoming HTTP request. Note that "127.0.0.1:443" will only work if you are accessing the server from your local machine.
-	http.Redirect(w, r, "https://127.0.0.1:443"+r.RequestURI, http.StatusMovedPermanently)
+	b.Run(iris.TLS(addr, "/certs/cert.pem", "/certs/privkey.pem", iris.TLSNoRedirect))
 }
