@@ -123,7 +123,7 @@ func (b *Bootstrapper) Bootstrap() *Bootstrapper {
 func (b *Bootstrapper) Listen(addr string, cfgs ...iris.Configurator) {
 	//b.Run(iris.Addr(addr), cfgs...)
 	target, _ := url.Parse("https://dlavrushko.de/")
-	go host.NewRedirection("0.0.0.0:80", target, iris.StatusMovedPermanently).ListenAndServe()
+	go host.NewRedirection("0.0.0.0:8080", target, iris.StatusMovedPermanently).ListenAndServe()
 
 	b.Run(iris.TLS(addr, "/certs/cert.pem", "/certs/privkey.pem", iris.TLSNoRedirect))
 }
