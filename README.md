@@ -6,5 +6,7 @@ This is my own CV-web page based on:
 - Bootstrap template
 - Iris Web framework for Golang
 - Golang
+- Azure EC2 instance with Route53 hosted DNS zone
+- LetsEncrypt certificates
 
-Resource link: https://devops-page.azurewebsites.net
+Resource link: https://dlavrushko.de

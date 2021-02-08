@@ -4,6 +4,9 @@ import (
 	"devops-page/bootstrap"
 	"devops-page/middleware/identity"
 	"devops-page/routes"
+	"fmt"
+	"os"
+	"regexp"
 )
 
 func newApp() *bootstrap.Bootstrapper {
@@ -15,5 +18,16 @@ func newApp() *bootstrap.Bootstrapper {
 
 func main() {
 	app := newApp()
-	app.Listen(":443")
+	envType, envTypeExist := os.LookupEnv("TEST_RUN")
+	if envTypeExist != true {
+		fmt.Println("TEST_RUN environment variable did not specified. :443 port will be used")
+		app.Listen(false, ":443")
+	} else {
+		r := regexp.MustCompile(`^(?i)true$`)
+		if r.MatchString(envType) {
+			app.Listen(true, ":8080")
+		}
+
+	}
+
 }
