@@ -1,83 +1,83 @@
-version: 2.1
-
-defaults:
-  docker_login: &docker_login
-    run:
-      name: Login to DockerHub
-      command: |
-        if [ "${DOCKER_USER}" == "" ] || [ "${DOCKER_PASS}" == "" ]; then
-            echo "Skipping Login to Dockerhub, no credentials."
-        else
-            echo "${DOCKER_PASS}" | docker login -u="${DOCKER_USER}" --password-stdin
-        fi
-
-jobs:
-  test:
-    docker:
-      - image: circleci/golang:1.15
-    steps:
-      - run:
-          name: Here must be tests
-          command: echo "test passed :)"
-
-  build:
-    environment:
-      DOCKER_USER: behoof4mind
-      IMAGE_NAME: behoof4mind/devops-page
-    docker:
-      - image: circleci/golang:1.15
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: Build docker image
-          command: |
-            IMAGE_TAG="0.0.${CIRCLE_BUILD_NUM}"
-            docker build -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:latest .
-            mkdir -p /tmp/images/$IMAGE_NAME
-            docker save -o /tmp/images/app.tar $IMAGE_NAME:$IMAGE_TAG
-            docker save -o /tmp/images/app-latest.tar $IMAGE_NAME:latest
-      - persist_to_workspace:
-          root: /tmp
-          paths:
-            - images
-
-  push:
-    environment:
-      DOCKER_USER: behoof4mind
-      IMAGE_NAME: behoof4mind/devops-page
-    docker:
-      - image: circleci/golang:1.15
-    steps:
-      - attach_workspace:
-          at: /tmp
-      - setup_remote_docker
-      - *docker_login
-      - run:
-          name: Publish Docker Image to DockerHub
-          command: |
-            ls -lah /tmp/images
-            docker load -i /tmp/images/app.tar
-            docker load -i /tmp/images/app-latest.tar
-            docker images
-            IMAGE_TAG="0.0.${CIRCLE_BUILD_NUM}"
-            docker tag $IMAGE_NAME $IMAGE_NAME:$IMAGE_TAG
-            docker tag $IMAGE_NAME $IMAGE_NAME:latest
-            docker push $IMAGE_NAME:$IMAGE_TAG
-            docker push $IMAGE_NAME:latest
-
-
-workflows:
-  main:
-    jobs:
-      - test
-      - build:
-          requires:
-            - test
-          context:
-            - DOCKERHUB
-      - push:
-          requires:
-            - build
-          context:
-            - DOCKERHUB
+#version: 2.1
+#
+#defaults:
+#  docker_login: &docker_login
+#    run:
+#      name: Login to DockerHub
+#      command: |
+#        if [ "${DOCKER_USER}" == "" ] || [ "${DOCKER_PASS}" == "" ]; then
+#            echo "Skipping Login to Dockerhub, no credentials."
+#        else
+#            echo "${DOCKER_PASS}" | docker login -u="${DOCKER_USER}" --password-stdin
+#        fi
+#
+#jobs:
+#  test:
+#    docker:
+#      - image: circleci/golang:1.15
+#    steps:
+#      - run:
+#          name: Here must be tests
+#          command: echo "test passed :)"
+#
+#  build:
+#    environment:
+#      DOCKER_USER: behoof4mind
+#      IMAGE_NAME: behoof4mind/devops-page
+#    docker:
+#      - image: circleci/golang:1.15
+#    steps:
+#      - checkout
+#      - setup_remote_docker
+#      - run:
+#          name: Build docker image
+#          command: |
+#            IMAGE_TAG="0.0.${CIRCLE_BUILD_NUM}"
+#            docker build -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:latest .
+#            mkdir -p /tmp/images/$IMAGE_NAME
+#            docker save -o /tmp/images/app.tar $IMAGE_NAME:$IMAGE_TAG
+#            docker save -o /tmp/images/app-latest.tar $IMAGE_NAME:latest
+#      - persist_to_workspace:
+#          root: /tmp
+#          paths:
+#            - images
+#
+#  push:
+#    environment:
+#      DOCKER_USER: behoof4mind
+#      IMAGE_NAME: behoof4mind/devops-page
+#    docker:
+#      - image: circleci/golang:1.15
+#    steps:
+#      - attach_workspace:
+#          at: /tmp
+#      - setup_remote_docker
+#      - *docker_login
+#      - run:
+#          name: Publish Docker Image to DockerHub
+#          command: |
+#            ls -lah /tmp/images
+#            docker load -i /tmp/images/app.tar
+#            docker load -i /tmp/images/app-latest.tar
+#            docker images
+#            IMAGE_TAG="0.0.${CIRCLE_BUILD_NUM}"
+#            docker tag $IMAGE_NAME $IMAGE_NAME:$IMAGE_TAG
+#            docker tag $IMAGE_NAME $IMAGE_NAME:latest
+#            docker push $IMAGE_NAME:$IMAGE_TAG
+#            docker push $IMAGE_NAME:latest
+#
+#
+#workflows:
+#  main:
+#    jobs:
+#      - test
+#      - build:
+#          requires:
+#            - test
+#          context:
+#            - DOCKERHUB
+#      - push:
+#          requires:
+#            - build
+#          context:
+#            - DOCKERHUB
