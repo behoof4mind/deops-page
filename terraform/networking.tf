@@ -73,13 +73,13 @@ resource "aws_subnet" "devops_page_c" {
   }
 }
 
-resource "aws_db_subnet_group" "devops-page" {
-  name       = "devops-page-rds-subnet-group"
-  subnet_ids = [aws_subnet.devops_page_a.id, aws_subnet.devops_page_b.id, aws_subnet.devops_page_c.id]
-
-  tags = {
-    Name = "devops-page DB subnet group"
-  }
-}
+//resource "aws_db_subnet_group" "devops-page" {
+//  name       = "devops-page-rds-subnet-group"
+//  subnet_ids = [aws_subnet.devops_page_a.id, aws_subnet.devops_page_b.id, aws_subnet.devops_page_c.id]
+//
+//  tags = {
+//    Name = "devops-page DB subnet group"
+//  }
+//}
 
 data "aws_availability_zones" "all" {}
