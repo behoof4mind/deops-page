@@ -3,7 +3,7 @@
 ############################
 FROM golang:1.15-alpine3.12 AS builder
 # Git is required for fetching the dependencies.
-RUN apk update && apk add --no-cache git=2.26.2-r0 ca-certificates=20191127-r4
+RUN apk update && apk add --no-cache git=2.26.3-r0 ca-certificates=20191127-r4
 
 WORKDIR $GOPATH/src/devops-page/
 COPY . .
