@@ -1,8 +1,8 @@
 provider "aws" {}
 
 terraform {
-  required_version = ">= 0.12.26"
   backend "s3" {}
+  required_version = ">= 0.12.26"
 }
 
 resource "aws_autoscaling_group" "devops-page" {
