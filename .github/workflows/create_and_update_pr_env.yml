@@ -48,7 +48,7 @@ jobs:
         continue-on-error: true
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="terraform-devops-page-state-test" -backend-config="key=terraform-test.tfstate" -backend-config="dynamodb_table=terraform-devops-page-state-test" -backend-config="encrypt=true"
+        run: terraform init -backend-config="terraform-devops-page-state" -backend-config="key=terraform-test.tfstate" -backend-config="dynamodb_table=terraform-devops-page-state-test" -backend-config="encrypt=true"
         working-directory: ./terraform
       - name: Setup Terraform variables
         working-directory: ./terraform
