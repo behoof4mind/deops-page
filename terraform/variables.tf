@@ -12,27 +12,27 @@ variable "elb_port" {
 
 variable "app_version" {
   description = "DevopsPage application version"
-  default = "0.1.0"
+  default     = "0.1.0"
 }
 
 variable "mysql_username" {
   description = "Mysql RDS username"
-  default = "root"
+  default     = "root"
 }
 
 variable "mysql_password" {
   description = "Mysql RDS user password"
-  default = "mysqlpass"
+  default     = "mysqlpass"
 }
 
 variable "env_prefix" {
   description = "Environment prefix"
-  default = "test"
+  default     = "test"
 }
 
 variable "is_temp_env" {
   description = "Boolean to differentiate prod/test environment"
-  default = false
+  default     = false
 }
 
 variable "max_ec2_instances" {

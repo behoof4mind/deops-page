@@ -88,7 +88,7 @@
 
 resource "aws_security_group" "elb" {
   vpc_id = aws_vpc.devops_page.id
-  name = "devops-page-elb-${var.env_prefix}"
+  name   = "devops-page-elb-${var.env_prefix}"
 
   ingress {
     from_port   = 0

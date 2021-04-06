@@ -65,7 +65,7 @@ resource "aws_launch_configuration" "devops-page" {
 resource "aws_elb" "devops-page" {
   name            = "devops-page-${var.env_prefix}"
   security_groups = [aws_security_group.elb.id]
-  subnets = [aws_subnet.devops_page_a.id, aws_subnet.devops_page_b.id, aws_subnet.devops_page_c.id]
+  subnets         = [aws_subnet.devops_page_a.id, aws_subnet.devops_page_b.id, aws_subnet.devops_page_c.id]
 
   health_check {
     target              = "HTTP:80/"
