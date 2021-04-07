@@ -82,3 +82,15 @@ resource "aws_elb" "devops-page" {
     instance_protocol = "http"
   }
 }
+
+resource "aws_route53_record" "www" {
+  zone_id = aws_route53_zone.primary.zone_id
+  name    = "dlavrushko.com"
+  type    = "A"
+
+  alias {
+    name                   = aws_elb.devops-page.dns_name
+    zone_id                = aws_elb.devops-page.zone_id
+    evaluate_target_health = true
+  }
+}
