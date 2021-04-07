@@ -84,7 +84,7 @@ resource "aws_elb" "devops-page" {
 }
 
 resource "aws_route53_zone" "main" {
-  name = "dlavrushko.com"
+  name = "dlavrushko.de"
   tags = {
     Environment = "prod"
   }
