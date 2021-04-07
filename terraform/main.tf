@@ -83,8 +83,23 @@ resource "aws_elb" "devops-page" {
   }
 }
 
+resource "aws_route53_zone" "main" {
+  name = "dlavrushko.com"
+  tags = {
+    Environment = "prod"
+  }
+}
+
+//resource "aws_route53_zone" "test" {
+//  name = "test.dlavrushko.com"
+//
+//  tags = {
+//    Environment = "test"
+//  }
+//}
+
 resource "aws_route53_record" "www" {
-  zone_id = aws_route53_zone.primary.zone_id
+  zone_id = aws_route53_zone.main.zone_id
   name    = "dlavrushko.com"
   type    = "A"
 
