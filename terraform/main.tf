@@ -98,7 +98,6 @@ resource "aws_route53_zone" "main" {
 //  }
 //}
 
-
 resource "aws_route53_record" "www" {
   zone_id = aws_route53_zone.main.zone_id
   name    = "dlavrushko.de"
