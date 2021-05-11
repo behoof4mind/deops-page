@@ -63,7 +63,28 @@ resource "aws_launch_configuration" "devops-page" {
 }
 
 resource "aws_elb" "devops-page" {
-  name            = "devops-page-${var.env_prefix}"
+  name            = "devops-page"
+  security_groups = [aws_security_group.elb.id]
+  subnets         = [aws_subnet.devops_page_a.id, aws_subnet.devops_page_b.id, aws_subnet.devops_page_c.id]
+
+  health_check {
+    target              = "HTTP:80/"
+    interval            = 30
+    timeout             = 10
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+  }
+
+  listener {
+    lb_port           = var.elb_port
+    lb_protocol       = "http"
+    instance_port     = 80
+    instance_protocol = "http"
+  }
+}
+
+resource "aws_elb" "devops-page-test" {
+  name            = "devops-page-test"
   security_groups = [aws_security_group.elb.id]
   subnets         = [aws_subnet.devops_page_a.id, aws_subnet.devops_page_b.id, aws_subnet.devops_page_c.id]
 
@@ -90,6 +111,13 @@ resource "aws_route53_zone" "main" {
   }
 }
 
+resource "aws_route53_zone" "test" {
+  name = "test.dlavrushko.de"
+  tags = {
+    Environment = "test"
+  }
+}
+
 //resource "aws_route53_zone" "test" {
 //  name = "test.dlavrushko.com"
 //
@@ -98,7 +126,7 @@ resource "aws_route53_zone" "main" {
 //  }
 //}
 
-resource "aws_route53_record" "www" {
+resource "aws_route53_record" "main" {
   zone_id = aws_route53_zone.main.zone_id
   name    = "dlavrushko.de"
   type    = "A"
@@ -106,6 +134,32 @@ resource "aws_route53_record" "www" {
   alias {
     name                   = aws_elb.devops-page.dns_name
     zone_id                = aws_elb.devops-page.zone_id
-    evaluate_target_health = true
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "subdomain-ns" {
+  allow_overwrite = true
+  name            = "test.dlavrushko.de"
+  ttl             = 180
+  type            = "NS"
+  zone_id         = aws_route53_zone.main.zone_id
+
+  records = [
+    aws_route53_zone.test.name_servers[0],
+    aws_route53_zone.test.name_servers[1],
+    aws_route53_zone.test.name_servers[2],
+  ]
+}
+
+resource "aws_route53_record" "test" {
+  zone_id = aws_route53_zone.test.zone_id
+  name    = "test.dlavrushko.de"
+  type    = "A"
+
+  alias {
+    name                   = aws_elb.devops-page-test.dns_name
+    zone_id                = aws_elb.devops-page-test.zone_id
+    evaluate_target_health = false
   }
 }
