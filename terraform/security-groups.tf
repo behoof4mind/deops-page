@@ -16,23 +16,23 @@
 //  }
 //}
 
-//resource "aws_security_group" "https-web-access" {
-//  vpc_id = aws_vpc.myservice_vpc.id
-//  name = "myservice-https-${var.env_prefix}"
-//
-//  ingress {
-//    from_port   = 443
-//    to_port     = 443
-//    protocol    = "tcp"
-//    cidr_blocks = [aws_vpc.myservice_vpc.cidr_block]
-//  }
-//  egress {
-//    from_port = 443
-//    to_port = 443
-//    protocol = "tcp"
-//    cidr_blocks = ["0.0.0.0/0"]
-//  }
-//}
+resource "aws_security_group" "https-web-access" {
+  vpc_id = aws_vpc.devops_page.id
+  name = "https"
+
+  ingress {
+    from_port   = 443
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.devops_page.cidr_block]
+  }
+  egress {
+    from_port = 443
+    to_port = 443
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
 
 //resource "aws_security_group" "ssh-access" {
 //  vpc_id = aws_vpc.myservice_vpc.id
