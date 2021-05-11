@@ -5,7 +5,7 @@ terraform {
 }
 
 resource "aws_autoscaling_group" "devops-page" {
-  name                 = "devops-page"
+  name                 = "devops-page-${var.app_version}"
   launch_configuration = aws_launch_configuration.devops-page.id
   //  availability_zones   = data.aws_availability_zones.all.names
   vpc_zone_identifier = [aws_subnet.devops_page_a.id, aws_subnet.devops_page_b.id, aws_subnet.devops_page_c.id]
