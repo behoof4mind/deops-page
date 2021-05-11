@@ -25,7 +25,6 @@ resource "aws_security_group" "https-web-access" {
     to_port          = 80
     protocol         = "tcp"
     cidr_blocks      = [aws_vpc.devops_page.cidr_block]
-    ipv6_cidr_blocks = [aws_vpc.devops_page.ipv6_cidr_block]
   }
 
   egress {
@@ -33,7 +32,6 @@ resource "aws_security_group" "https-web-access" {
     to_port          = 0
     protocol         = "-1"
     cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
   }
 }
 
