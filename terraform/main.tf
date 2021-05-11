@@ -149,6 +149,7 @@ resource "aws_route53_record" "subdomain-ns" {
     aws_route53_zone.test.name_servers[0],
     aws_route53_zone.test.name_servers[1],
     aws_route53_zone.test.name_servers[2],
+    aws_route53_zone.test.name_servers[3],
   ]
 }
 
