@@ -1,6 +1,10 @@
 on:
+
   pull_request:
-    types: [closed]
+    branches:
+      - main
+    types:
+      - closed
 
 name: Destroy PR Env
 jobs:

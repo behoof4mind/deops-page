@@ -1,10 +1,11 @@
 on:
-  pull_request:
-    types: [reopened, opened, synchronize, edited]
+  push:
+    branches:
+      - main
 
-name: Create PR Env
+name: build and release main
 jobs:
-  create_or_update_pr_env:
+  build:
     runs-on: ubuntu-latest
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -38,7 +39,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ steps.previoustag.outputs.tag }}-test
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ steps.previoustag.outputs.tag }}
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
       - name: Terraform fmt
@@ -96,6 +97,8 @@ jobs:
             \`\`\`${process.env.PLAN}\`\`\`
 
             </details>
+
+            Check service at <a href="https://dlavrushko.de">https://dlavrushko.de</a>
 
             *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workflow: \`${{ github.workflow }}\`*`;
 
