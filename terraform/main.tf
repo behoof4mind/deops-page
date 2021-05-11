@@ -5,7 +5,7 @@ terraform {
 }
 
 resource "aws_autoscaling_group" "devops-page" {
-  name                 = "devops-page-${var.env_prefix}"
+  name                 = "devops-page"
   launch_configuration = aws_launch_configuration.devops-page.id
   //  availability_zones   = data.aws_availability_zones.all.names
   vpc_zone_identifier = [aws_subnet.devops_page_a.id, aws_subnet.devops_page_b.id, aws_subnet.devops_page_c.id]
@@ -24,7 +24,7 @@ resource "aws_autoscaling_group" "devops-page" {
 }
 
 resource "aws_launch_configuration" "devops-page" {
-  name_prefix   = "devops-page-${var.env_prefix}"
+  name_prefix   = "devops-page"
   image_id      = "ami-01e7ca2ef94a0ae86"
   instance_type = "t2.micro"
   key_name      = "macos16"
