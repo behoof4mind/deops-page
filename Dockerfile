@@ -7,7 +7,6 @@ RUN apk update && apk add --no-cache git=2.26.3-r0 ca-certificates=20191127-r4
 
 WORKDIR $GOPATH/src/devops-page/
 COPY . .
-ARG
 # Fetch dependencies using go get
 RUN go get -d -v
 # Build the binary.
