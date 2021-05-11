@@ -45,7 +45,7 @@ resource "aws_launch_configuration" "devops-page" {
 
               cat <<EOF >/home/ubuntu/docker-compose.yml
               devops-page:
-                image: behoof4mind/devops-page:${var.app_version}
+                image: "behoof4mind/devops-page:${var.app_version}"
                 ports:
                   - "80:${var.server_port}"
                 environment:
