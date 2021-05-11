@@ -24,10 +24,10 @@ resource "aws_autoscaling_group" "devops-page" {
 }
 
 resource "aws_launch_configuration" "devops-page" {
-  name_prefix   = "devops-page"
-  image_id      = "ami-01e7ca2ef94a0ae86"
-  instance_type = "t2.micro"
-  key_name      = "macos16"
+  name_prefix                 = "devops-page"
+  image_id                    = "ami-01e7ca2ef94a0ae86"
+  instance_type               = "t2.micro"
+  key_name                    = "macos16"
   associate_public_ip_address = true
   //  security_groups = [aws_security_group.http-web-access.id, aws_security_group.https-web-access.id, aws_security_group.ssh-access.id,aws_security_group.db-access.id]
   security_groups = [aws_security_group.https-web-access.id]
