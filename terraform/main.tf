@@ -76,10 +76,11 @@ resource "aws_elb" "devops-page" {
   }
 
   listener {
-    lb_port           = var.elb_port
-    lb_protocol       = "http"
-    instance_port     = 80
-    instance_protocol = "http"
+    lb_port            = var.elb_port
+    lb_protocol        = "https"
+    instance_port      = 80
+    instance_protocol  = "http"
+    ssl_certificate_id = aws_acm_certificate.cert.id
   }
 }
 
@@ -130,6 +131,32 @@ resource "aws_route53_record" "ns" {
     "ns-556.awsdns-05.net",
     "ns-1556.awsdns-02.co.uk",
   ]
+}
+
+resource "aws_acm_certificate" "cert" {
+  domain_name       = "dlavrushko.de"
+  validation_method = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_route53_record" "example" {
+  for_each = {
+    for dvo in aws_acm_certificate.cert.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  }
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = aws_route53_zone.main.zone_id
 }
 
 //resource "aws_route53_record" "subdomain-ns" {
