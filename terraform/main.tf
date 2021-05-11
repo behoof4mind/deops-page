@@ -30,7 +30,7 @@ resource "aws_launch_configuration" "devops-page" {
   key_name                    = "macos16"
   associate_public_ip_address = true
   //  security_groups = [aws_security_group.http-web-access.id, aws_security_group.https-web-access.id, aws_security_group.ssh-access.id,aws_security_group.db-access.id]
-  security_groups = [aws_security_group.https-web-access.id]
+  security_groups = [aws_security_group.web-access.id]
 
   user_data = <<-REALEND
               #!/bin/bash
@@ -89,21 +89,6 @@ resource "aws_route53_zone" "main" {
     Environment = "prod"
   }
 }
-
-//resource "aws_route53_zone" "test" {
-//  name = "test.dlavrushko.de"
-//  tags = {
-//    Environment = "test"
-//  }
-//}
-
-//resource "aws_route53_zone" "test" {
-//  name = "test.dlavrushko.com"
-//
-//  tags = {
-//    Environment = "test"
-//  }
-//}
 
 resource "aws_route53_record" "main" {
   zone_id = aws_route53_zone.main.zone_id
