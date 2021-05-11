@@ -3,7 +3,7 @@ resource "aws_vpc" "devops_page" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "devops-page-${var.env_prefix}"
+    Name = "devops-page"
   }
 }
 
@@ -49,7 +49,7 @@ resource "aws_subnet" "devops_page_a" {
   cidr_block        = "172.16.10.0/24"
 
   tags = {
-    Name = "devops-page-${var.env_prefix}-a"
+    Name = "devops-page-a"
   }
 }
 
@@ -59,7 +59,7 @@ resource "aws_subnet" "devops_page_b" {
   cidr_block        = "172.16.20.0/24"
 
   tags = {
-    Name = "devops-page-${var.env_prefix}-b"
+    Name = "devops-page-b"
   }
 }
 
@@ -69,7 +69,7 @@ resource "aws_subnet" "devops_page_c" {
   cidr_block        = "172.16.3.0/24"
 
   tags = {
-    Name = "devops-page-${var.env_prefix}-c"
+    Name = "devops-page-c"
   }
 }
 

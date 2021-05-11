@@ -5,7 +5,7 @@ terraform {
 }
 
 resource "aws_autoscaling_group" "devops-page" {
-  name                 = "devops-page-${var.env_prefix}"
+  name                 = "devops-page-${var.app_version}"
   launch_configuration = aws_launch_configuration.devops-page.id
   //  availability_zones   = data.aws_availability_zones.all.names
   vpc_zone_identifier = [aws_subnet.devops_page_a.id, aws_subnet.devops_page_b.id, aws_subnet.devops_page_c.id]
@@ -18,19 +18,19 @@ resource "aws_autoscaling_group" "devops-page" {
 
   tag {
     key                 = "Name"
-    value               = "terraform-asg-devops-page-${var.env_prefix}"
+    value               = "terraform-asg-devops-page"
     propagate_at_launch = true
   }
 }
 
 resource "aws_launch_configuration" "devops-page" {
-  name_prefix   = "devops-page-${var.env_prefix}"
-  image_id      = "ami-01e7ca2ef94a0ae86"
-  instance_type = "t2.micro"
-  key_name      = "macos16"
+  name_prefix                 = "devops-page"
+  image_id                    = "ami-01e7ca2ef94a0ae86"
+  instance_type               = "t2.micro"
+  key_name                    = "macos16"
   associate_public_ip_address = true
   //  security_groups = [aws_security_group.http-web-access.id, aws_security_group.https-web-access.id, aws_security_group.ssh-access.id,aws_security_group.db-access.id]
-  security_groups = [aws_security_group.elb.id]
+  security_groups = [aws_security_group.web-access.id]
 
   user_data = <<-REALEND
               #!/bin/bash
@@ -45,7 +45,7 @@ resource "aws_launch_configuration" "devops-page" {
 
               cat <<EOF >/home/ubuntu/docker-compose.yml
               devops-page:
-                image: behoof4mind/devops-page:${var.app_version}
+                image: "behoof4mind/devops-page:${var.app_version}"
                 ports:
                   - "80:${var.server_port}"
                 environment:
@@ -89,21 +89,6 @@ resource "aws_route53_zone" "main" {
     Environment = "prod"
   }
 }
-
-//resource "aws_route53_zone" "test" {
-//  name = "test.dlavrushko.de"
-//  tags = {
-//    Environment = "test"
-//  }
-//}
-
-//resource "aws_route53_zone" "test" {
-//  name = "test.dlavrushko.com"
-//
-//  tags = {
-//    Environment = "test"
-//  }
-//}
 
 resource "aws_route53_record" "main" {
   zone_id = aws_route53_zone.main.zone_id
