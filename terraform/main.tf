@@ -18,7 +18,7 @@ resource "aws_autoscaling_group" "devops-page" {
 
   tag {
     key                 = "Name"
-    value               = "terraform-asg-devops-page-${var.env_prefix}"
+    value               = "terraform-asg-devops-page"
     propagate_at_launch = true
   }
 }
