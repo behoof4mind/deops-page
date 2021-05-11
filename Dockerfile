@@ -7,7 +7,7 @@ RUN apk update && apk add --no-cache git=2.26.3-r0 ca-certificates=20191127-r4
 
 WORKDIR $GOPATH/src/devops-page/
 COPY . .
-ARG APP_VERSION="0.0.1"
+ARG
 # Fetch dependencies using go get
 RUN go get -d -v
 # Build the binary.
@@ -20,6 +20,8 @@ COPY ./public /root/devops-page/public
 # STEP 2 build a small image
 ############################
 FROM scratch
+ARG APP_VERSION="0.0.1"
+ENV APP_VERSION=${APP_VERSION}
 LABEL maintainer="dlavrushko@protonmail.com"
 WORKDIR /app/
 COPY --from=builder /root/devops-page/ .
