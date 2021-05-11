@@ -15,6 +15,7 @@ func New(b *bootstrap.Bootstrapper) iris.Handler {
 		// response headers
 		ctx.Header("App-Name", b.AppName)
 		ctx.Header("App-Owner", b.AppOwner)
+		ctx.Header("App-Version", b.AppVersion)
 		ctx.Header("App-Since", time.Since(b.AppSpawnDate).String())
 
 		ctx.Header("Server", "Iris: https://devops-page.azurewebsites.net")
@@ -22,6 +23,7 @@ func New(b *bootstrap.Bootstrapper) iris.Handler {
 		// view data if ctx.View or c.Tmpl = "$page.html" will be called next.
 		ctx.ViewData("AppName", b.AppName)
 		ctx.ViewData("AppOwner", b.AppOwner)
+		ctx.ViewData("AppVersion", b.AppVersion)
 		ctx.Next()
 	}
 }
