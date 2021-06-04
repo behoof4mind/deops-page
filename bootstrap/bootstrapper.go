@@ -20,16 +20,18 @@ type Bootstrapper struct {
 	*iris.Application
 	AppName      string
 	AppOwner     string
+	AppVersion   string
 	AppSpawnDate time.Time
 
 	Sessions *sessions.Sessions
 }
 
 // New returns a new Bootstrapper.
-func New(appName, appOwner string, cfgs ...Configurator) *Bootstrapper {
+func New(appName, appOwner string, appVersion string, cfgs ...Configurator) *Bootstrapper {
 	b := &Bootstrapper{
 		AppName:      appName,
 		AppOwner:     appOwner,
+		AppVersion:   appVersion,
 		AppSpawnDate: time.Now(),
 		Application:  iris.New(),
 	}

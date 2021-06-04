@@ -19,6 +19,8 @@ COPY ./public /root/devops-page/public
 # STEP 2 build a small image
 ############################
 FROM scratch
+ARG APP_VERSION="0.0.1"
+ENV APP_VERSION=${APP_VERSION}
 LABEL maintainer="dlavrushko@protonmail.com"
 WORKDIR /app/
 COPY --from=builder /root/devops-page/ .

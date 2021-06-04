@@ -10,7 +10,11 @@ import (
 )
 
 func newApp() *bootstrap.Bootstrapper {
-	app := bootstrap.New("Devops-page", "Denis Lavrushko")
+	version, exists := os.LookupEnv("APP_VERSION")
+	if !exists {
+		version = "0.0.1"
+	}
+	app := bootstrap.New("Devops-page", "Denis Lavrushko", version)
 	app.Bootstrap()
 	app.Configure(identity.Configure, routes.Configure)
 	return app
