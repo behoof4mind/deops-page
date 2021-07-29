@@ -23,7 +23,7 @@ func newApp() *bootstrap.Bootstrapper {
 func main() {
 	app := newApp()
 	envType, envTypeExist := os.LookupEnv("TEST_RUN")
-	if envTypeExist != true {
+	if !envTypeExist {
 		fmt.Println("TEST_RUN environment variable did not specified. :443 port will be used")
 		app.Listen(false, ":443")
 	} else {
