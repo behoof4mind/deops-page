@@ -1,9 +1,10 @@
 package bootstrap
 
 import (
-	"github.com/kataras/iris/v12/core/host"
 	"net/url"
 	"time"
+
+	"github.com/kataras/iris/v12/core/host"
 
 	"github.com/gorilla/securecookie"
 
